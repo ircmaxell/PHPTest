@@ -22,32 +22,25 @@ class TestCase implements Testable {
         }
     }
 
-    public function assertPreConditions() {
-
+    protected function assertPreConditions() {
     }
 
-    public function assertPostConditions() {
-
+    protected function assertPostConditions() {
     }
 
-    public function setUpBeforeClass() {
-
+    protected function setUpBeforeClass() {
     }
 
-    public function onNotSuccessfulTest() {
-
+    protected function onNotSuccessfulTest() {
     }
 
-    public function setUp() {
-
+    protected function setUp() {
     }
 
-    public function tearDown() {
-
+    protected function tearDown() {
     }
 
-    public function tearDownAfterClass() {
-
+    protected function tearDownAfterClass() {
     }
 
     public function run(TestResult $result) {

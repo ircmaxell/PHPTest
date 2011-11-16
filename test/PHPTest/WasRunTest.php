@@ -6,31 +6,31 @@ class WasRunTest extends TestCase {
 
     public $log = '';
 
-    public function assertPreConditions() {
+    protected function assertPreConditions() {
         $this->log .= 'assertPreConditions ';
     }
 
-    public function assertPostConditions() {
+    protected function assertPostConditions() {
         $this->log .= 'assertPostConditions ';
     }
 
-    public function onNotSuccessfulTest() {
+    protected function onNotSuccessfulTest() {
         $this->log .= 'onNotSuccessfulTest ';
     }
 
-    public function setUp() {
+    protected function setUp() {
         $this->log .= 'setUp ';
     }
 
-    public function tearDown() {
+    protected function tearDown() {
         $this->log .= 'tearDown ';
     }
 
-    public function setUpBeforeClass() {
+    protected function setUpBeforeClass() {
         $this->log .= 'setUpBeforeClass ';
     }
 
-    public function tearDownAfterClass() {
+    protected function tearDownAfterClass() {
         $this->log .= 'tearDownAfterClass ';
     }
 
