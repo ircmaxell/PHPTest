@@ -11,11 +11,16 @@ class TestCase {
     }
 
     public function setUp() {
-        
+
+    }
+
+    public function tearDown() {
+
     }
 
     public function run() {
         $this->setUp();
         $this->{$this->name}();
+        $this->tearDown();
     }
 }

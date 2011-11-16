@@ -10,6 +10,10 @@ class WasRunTest extends \PHPTest\TestCase {
         $this->log = 'setUp ';
     }
 
+    public function tearDown() {
+        $this->log .= 'tearDown ';
+    }
+
     public function testMethod() {
         $this->log .= 'testMethod ';
     }

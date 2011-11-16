@@ -7,7 +7,7 @@ class TestCaseTest extends \PHPTest\TestCase {
     public function testTemplateMethod() {
         $test = new WasRunTest('testMethod');
         $test->run();
-        $this->assert($test->log == 'setUp testMethod ', 'Was Not Run');
+        $this->assert($test->log == 'setUp testMethod tearDown ', 'Was Not Run Correctly');
         echo "Passed";
     }
 
