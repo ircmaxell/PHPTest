@@ -10,6 +10,12 @@ class TestCase {
         $this->name = $name;
     }
 
+    public function assert($test, $message = '') {
+        if (!$test) {
+            throw new \Exception($message);
+        }
+    }
+
     public function setUp() {
 
     }
@@ -18,9 +24,14 @@ class TestCase {
 
     }
 
-    public function run() {
+    public function run(TestResult $result) {
+        $result->testStarted();
         $this->setUp();
-        $this->{$this->name}();
+        try {
+            $this->{$this->name}();
+        } catch (\Exception $e) {
+            $result->testFailed();
+        }
         $this->tearDown();
     }
 }

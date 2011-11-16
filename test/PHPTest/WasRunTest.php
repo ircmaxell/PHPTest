@@ -18,4 +18,8 @@ class WasRunTest extends TestCase {
         $this->log .= 'testMethod ';
     }
 
+    public function testBrokenMethod() {
+        throw new \Exception('Broken');
+    }
+
 }
