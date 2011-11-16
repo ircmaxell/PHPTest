@@ -2,9 +2,6 @@
 
 namespace PHPTest\test\Unit;
 
-require_once 'WasRunTest.php';
-require_once '../../src/PHPTest/TestCase.php';
-
 class TestCaseTest extends \PHPTest\TestCase {
 
     public function testRunning() {
@@ -22,7 +19,3 @@ class TestCaseTest extends \PHPTest\TestCase {
     }
 
 }
-
-
-$test = new TestCaseTest('testRunning');
-$test->run();
