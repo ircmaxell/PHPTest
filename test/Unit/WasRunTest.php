@@ -3,7 +3,14 @@
 namespace PHPTest\test\Unit;
 
 $test = new WasRun();
-print $test->wasRun;
+echo $test->wasRun;
 $test->testMethod();
-print $test->wasRun;
+echo $test->wasRun;
 
+class WasRun {
+    public $wasRun = 0;
+
+    public function testMethod() {
+        $this->wasRun = 1;
+    }
+}
