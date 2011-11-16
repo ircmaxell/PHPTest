@@ -13,4 +13,8 @@ class WasRun {
     public function testMethod() {
         $this->wasRun = 1;
     }
+
+    public function run() {
+        $this->testMethod();
+    }
 }
