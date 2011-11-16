@@ -3,10 +3,9 @@
 namespace PHPTest;
 
 class TestCase {
-
     protected $name = '';
 
-    public function __construct($name) {
+    public function __construct($name = '') {
         $this->name = $name;
     }
 
@@ -25,11 +24,24 @@ class TestCase {
     }
 
     public function run(TestResult $result) {
+        if ($this->name) {
+            $this->runTest($this->name, $result);
+        } else {
+            $reflector = new \ReflectionObject($this);
+            foreach ($reflector->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+                if (stripos($method->getName(), 'test') === 0) {
+                    $this->runTest($method->getName(), $result);
+                }
+            }
+        }
+    }
+
+    public function runTest($name, TestResult $result) {
         $result->testStarted();
         $this->setUp();
         $this->installErrorHandler();
         try {
-            $this->{$this->name}();
+            $this->{$name}();
         } catch (\PHPTest\Exception\ErrorException $e) {
             $result->testError($e);
         } catch (\Exception $e) {

@@ -26,4 +26,11 @@ class WasRunTest extends TestCase {
         throw new \Exception('Broken');
     }
 
+    public function testCalled() {
+    }
+
+    public function notCalled() {
+        throw new \Exception('Should not be called!');
+    }
+
 }
