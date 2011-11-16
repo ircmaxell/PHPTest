@@ -8,3 +8,6 @@ require_once 'Unit/TestCaseTest.php';
 
 $test = new \PHPTest\test\Unit\TestCaseTest('testRunning');
 $test->run();
+
+$test = new \PHPTest\test\Unit\TestCaseTest('testSetUp');
+$test->run();
