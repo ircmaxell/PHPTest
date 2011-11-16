@@ -10,6 +10,11 @@ class TestCaseTest extends TestCase {
         $this->result = new TestResult;
     }
 
+    public function testCount() {
+        $test = new WasRunTest();
+        $this->assert(4 == count($test));
+    }
+
     public function testAssert() {
         $this->assert(true, 'Assert(true) failed!!!');
     }

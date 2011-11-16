@@ -2,7 +2,7 @@
 
 namespace PHPTest;
 
-interface Testable {
+interface Testable extends \Countable {
 
     public function run(TestResult $result);
 

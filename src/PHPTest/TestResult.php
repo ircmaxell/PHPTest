@@ -7,7 +7,19 @@ class TestResult {
     protected $errors = array();
     protected $failures = array();
     protected $runCount = 0;
-    protected $failedCount = 0;
+    protected $completedCount = 0;
+
+    protected $observers = array();
+
+    public function attachObserver($callback) {
+        $this->observers[] = $callback;
+    }
+
+    public function updateObservers() {
+        foreach ($this->observers as $callback) {
+            call_user_func_array($callback, func_get_args());
+        }
+    }
 
     public function getRunCount() {
         return $this->runCount;
@@ -30,19 +42,27 @@ class TestResult {
     }
 
     public function getSuccessfulCount() {
-        return $this->runCount - ($this->getErrorCount() + $this->getFailedCount());
+        return $this->completedCount;
+    }
+
+    public function testCompleted() {
+        $this->completedCount++;
+        $this->updateObservers('testCompleted');
     }
 
     public function testError(\Exception $error) {
         $this->errors[] = $error;
+        $this->updateObservers('testError', $error);
     }
 
     public function testFailed(\Exception $failure) {
         $this->failures[] = $failure;
+        $this->updateObservers('testFailure', $failure);
     }
 
     public function testStarted() {
         $this->runCount++;
+        $this->updateObservers('testStarted');
     }
 
     public function report() {

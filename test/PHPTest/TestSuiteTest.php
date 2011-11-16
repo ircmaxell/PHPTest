@@ -4,6 +4,14 @@ namespace PHPTest;
 
 class TestSuiteTest extends TestCase {
 
+    public function testCount() {
+        $suite = new TestSuite;
+        $suite->add(new WasRunTest());
+        $this->assert(4 == count($suite));
+        $suite->add(new WasRunTest());
+        $this->assert(8 == count($suite));
+    }
+
     public function testSuite() {
         $suite = new TestSuite;
         $suite->add(new WasRunTest());

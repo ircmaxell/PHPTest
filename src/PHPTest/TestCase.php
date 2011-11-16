@@ -9,11 +9,15 @@ class TestCase implements Testable {
     public function __construct($name = '') {
         $reflector = new \ReflectionObject($this);
         foreach ($reflector->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-            $test = $name ? strcasecmp($name, $method->getName()) : stripos($method->getName(), 'test');
+            $test = $name ? strcasecmp($method->getName(), $name) : stripos($method->getName(), 'test');
             if ($test === 0) {
                 $this->tests[] = $method->getName();
             }
         }
+    }
+
+    public function count() {
+        return count($this->tests);
     }
 
     public function assert($test, $message = '') {
@@ -59,6 +63,7 @@ class TestCase implements Testable {
             $this->assertPreConditions();
             $this->{$name}();
             $this->assertPostConditions();
+            $result->testCompleted();
         } catch (\PHPTest\Exception\ErrorException $e) {
             $this->onNotSuccessfulTest();
             $result->testError($e);

@@ -4,6 +4,20 @@ namespace PHPTest\Report;
 
 class CLITest extends \PHPTest\TestCase {
 
+    public function testUpdate() {
+        $result = new \PHPTest\TestResult;
+        $result->testStarted();
+        $renderer = new CLI;
+        $text = $renderer->update($result, 'testStarted');
+        $this->assert('' == $text);
+        $text = $renderer->update($result, 'testCompleted');
+        $this->assert('.' == $text);
+        $text = $renderer->update($result, 'testFailure');
+        $this->assert('F' == $text);
+        $text = $renderer->update($result, 'testError');
+        $this->assert('E' == $text);
+    }
+
     public function testRender() {
         $result = new \PHPTest\TestResult;
         $result->testStarted();
