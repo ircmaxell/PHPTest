@@ -12,6 +12,9 @@ $suite->add(new \PHPTest\TestResultTest());
 $suite->add(new \PHPTest\TestSuiteTest());
 $suite->add(new \PHPTest\Report\CLITest());
 
+$coverage = new \PHPTest\TestCoverage;
+$coverage->add($suite);
+
 $result = new \PHPTest\TestResult;
 $renderer = new \PHPTest\Report\CLI;
 $result->attachObserver(function($name, $arg1 = null) use ($result, $renderer, $suite) {
@@ -30,5 +33,10 @@ $result->attachObserver(function($name, $arg1 = null) use ($result, $renderer, $
 });
 $suite->run($result);
 
-
 echo "\n\n" . $renderer->render($result);
+
+$phpCC = $coverage->getCoverage();
+
+require_once 'PHP/CodeCoverage/Report/HTML.php';
+$writer = new \PHP_CodeCoverage_Report_HTML;
+$writer->process($phpCC, __DIR__ . '/coverage');

@@ -6,6 +6,18 @@ class TestCase implements Testable {
 
     protected $tests = array();
 
+    protected $observers = array();
+
+    public function attachObserver($callback) {
+        $this->observers[] = $callback;
+    }
+
+    public function updateObservers() {
+        foreach ($this->observers as $callback) {
+            call_user_func_array($callback, func_get_args());
+        }
+    }
+
     public function __construct($name = '') {
         $reflector = new \ReflectionObject($this);
         foreach ($reflector->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
@@ -61,13 +73,17 @@ class TestCase implements Testable {
         $this->installErrorHandler();
         try {
             $this->assertPreConditions();
+            $this->updateObservers('beforeTest', $name, $result);
             $this->{$name}();
+            $this->updateObservers('afterTest', $name, $result);
             $this->assertPostConditions();
             $result->testCompleted();
         } catch (\PHPTest\Exception\ErrorException $e) {
+            $this->updateObservers('errorTest', $name, $result, $e);
             $this->onNotSuccessfulTest();
             $result->testError($e);
         } catch (\Exception $e) {
+            $this->updateObservers('failedTest', $name, $result, $e);
             $this->onNotSuccessfulTest();
             $result->testFailed($e);
         }
