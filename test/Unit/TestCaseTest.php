@@ -9,14 +9,16 @@ class TestCaseTest extends \PHPTest\TestCase {
 
     public function testRunning() {
         $test = new WasRunTest('testMethod');
-        if ($test->wasRun) {
-            throw new \Exception('Was Run Already');
-        }
+        $this->assert(!$test->wasRun, 'Was Run Already');
         $test->run();
-        if (!$test->wasRun) {
-            throw new \Exception('Was Not Run');
-        }
+        $this->assert($test->wasRun, 'Was Not Run');
         echo "Passed";
+    }
+
+    public function assert($test, $message = '') {
+        if (!$test) {
+            throw new \Exception($message);
+        }
     }
 
 }
