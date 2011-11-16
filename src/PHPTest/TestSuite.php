@@ -2,10 +2,10 @@
 
 namespace PHPTest;
 
-class TestSuite {
+class TestSuite implements Testable {
     protected $tests = array();
 
-    public function add(TestCase $test) {
+    public function add(Testable $test) {
         $this->tests[] = $test;
     }
 

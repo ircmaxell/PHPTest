@@ -3,6 +3,7 @@
 namespace PHPTest;
 
 class TestCaseTest extends TestCase {
+
     protected $result = null;
 
     public function setUp() {
@@ -24,8 +25,14 @@ class TestCaseTest extends TestCase {
 
     public function testTemplateMethod() {
         $test = new WasRunTest();
-        $test->runTest('testMethod', $this->result);
-        $this->assert($test->log == 'setUp testMethod tearDown ', 'Was Not Run Correctly');
+        $test->run($this->result);
+        $expected = 'setUpBeforeClass ';
+        $expected .= 'setUp assertPreConditions testErrorMethod onNotSuccessfulTest tearDown ';
+        $expected .= 'setUp assertPreConditions testMethod assertPostConditions tearDown ';
+        $expected .= 'setUp assertPreConditions testBrokenMethod onNotSuccessfulTest tearDown ';
+        $expected .= 'setUp assertPreConditions testCalled assertPostConditions tearDown ';
+        $expected .= 'tearDownAfterClass ';
+        $this->assert($test->log == $expected, 'Was Not Run Correctly');
     }
 
     public function testResult() {
@@ -53,8 +60,9 @@ class TestCaseTest extends TestCase {
     }
 
     public function testSingleTestCase() {
-        $test = new WasRunTest('testErrorMethod');
+        $test = new WasRunTest('testMethod');
         $test->run($this->result);
         $this->assert(1 == $this->result->getRunCount());
     }
+
 }

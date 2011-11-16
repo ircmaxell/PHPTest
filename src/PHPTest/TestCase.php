@@ -2,17 +2,40 @@
 
 namespace PHPTest;
 
-class TestCase {
-    protected $name = '';
+class TestCase implements Testable {
+
+    protected $tests = array();
 
     public function __construct($name = '') {
-        $this->name = $name;
+        $reflector = new \ReflectionObject($this);
+        foreach ($reflector->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+            $test = $name ? strcasecmp($name, $method->getName()) : stripos($method->getName(), 'test');
+            if ($test === 0) {
+                $this->tests[] = $method->getName();
+            }
+        }
     }
 
     public function assert($test, $message = '') {
         if (!$test) {
             throw new \PHPTest\Exception\AssertionFailure($message);
         }
+    }
+
+    public function assertPreConditions() {
+
+    }
+
+    public function assertPostConditions() {
+
+    }
+
+    public function setUpBeforeClass() {
+
+    }
+
+    public function onNotSuccessfulTest() {
+
     }
 
     public function setUp() {
@@ -23,17 +46,16 @@ class TestCase {
 
     }
 
+    public function tearDownAfterClass() {
+
+    }
+
     public function run(TestResult $result) {
-        if ($this->name) {
-            $this->runTest($this->name, $result);
-        } else {
-            $reflector = new \ReflectionObject($this);
-            foreach ($reflector->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-                if (stripos($method->getName(), 'test') === 0) {
-                    $this->runTest($method->getName(), $result);
-                }
-            }
+        $this->setUpBeforeClass();
+        foreach ($this->tests as $test) {
+            $this->runTest($test, $result);
         }
+        $this->tearDownAfterClass();
     }
 
     public function runTest($name, TestResult $result) {
@@ -41,10 +63,14 @@ class TestCase {
         $this->setUp();
         $this->installErrorHandler();
         try {
+            $this->assertPreConditions();
             $this->{$name}();
+            $this->assertPostConditions();
         } catch (\PHPTest\Exception\ErrorException $e) {
+            $this->onNotSuccessfulTest();
             $result->testError($e);
         } catch (\Exception $e) {
+            $this->onNotSuccessfulTest();
             $result->testFailed($e);
         }
         $this->uninstallErrorHandler();
