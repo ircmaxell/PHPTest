@@ -14,6 +14,10 @@ class WasRunTest extends TestCase {
         $this->log .= 'tearDown ';
     }
 
+    public function testErrorMethod() {
+        trigger_error('testing errors', E_USER_WARNING);
+    }
+
     public function testMethod() {
         $this->log .= 'testMethod ';
     }

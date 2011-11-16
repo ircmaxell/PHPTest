@@ -18,13 +18,19 @@ class TestCaseTest extends TestCase {
     public function testResult() {
         $test = new WasRunTest('testMethod');
         $test->run($this->result);
-        $this->assert('1 run, 0 failed' == $this->result->summary());
+        $this->assert(1 == $this->result->getSuccessfulCount());
     }
 
     public function testFailedResult() {
         $test = new WasRunTest('testBrokenMethod');
         $test->run($this->result);
-        $this->assert('1 run, 1 failed' == $this->result->summary());
+        $this->assert(1 == $this->result->getFailedCount());
+    }
+
+    public function testErrorResult() {
+        $test = new WasRunTest('testErrorMethod');
+        $test->run($this->result);
+        $this->assert(1 == $this->result->getErrorCount());
     }
 
 }
