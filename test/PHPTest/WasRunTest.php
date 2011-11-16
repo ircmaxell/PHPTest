@@ -1,8 +1,8 @@
 <?php
 
-namespace PHPTest\test\Unit;
+namespace PHPTest;
 
-class WasRunTest extends \PHPTest\TestCase {
+class WasRunTest extends TestCase {
 
     public $log = '';
 

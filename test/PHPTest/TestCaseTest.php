@@ -1,8 +1,8 @@
 <?php
 
-namespace PHPTest\test\Unit;
+namespace PHPTest;
 
-class TestCaseTest extends \PHPTest\TestCase {
+class TestCaseTest extends TestCase {
 
     public function testTemplateMethod() {
         $test = new WasRunTest('testMethod');
