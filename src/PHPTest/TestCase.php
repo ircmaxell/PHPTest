@@ -10,7 +10,12 @@ class TestCase {
         $this->name = $name;
     }
 
+    public function setUp() {
+        
+    }
+
     public function run() {
+        $this->setUp();
         $this->{$this->name}();
     }
 }

@@ -16,6 +16,7 @@ class TestCaseTest extends \PHPTest\TestCase {
         $test = new WasRunTest('testMethod');
         $test->run();
         $this->assert($test->wasSetUp, 'Was Not Set Up');
+        echo "Passed";
     }
 
     public function assert($test, $message = '') {
