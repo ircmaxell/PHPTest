@@ -4,7 +4,7 @@ namespace PHPTest\test\Unit;
 
 $test = new WasRun();
 echo $test->wasRun;
-$test->testMethod();
+$test->run();
 echo $test->wasRun;
 
 class WasRun {
