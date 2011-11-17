@@ -2,102 +2,40 @@
 
 namespace PHPTest;
 
-class TestCase implements Testable {
+class TestCase extends TestBase {
 
-    protected $tests = array();
+    protected $test = null;
+    protected $method = '';
+    protected $arguments = array();
 
-    protected $observers = array();
-
-    protected $plugins = array();
-
-    public function __call($method, $args) {
-        foreach ($this->plugins as $plugin) {
-            if (method_exists($plugin, $method)) {
-                return call_user_func_array(array($plugin, $method), $args);
-            }
-        }
-        throw new \BadMethodCallException('Method does not exist in plugins');
-    }
-
-    public function addPlugin($plugin) {
-        $this->plugins[] = $plugin;
-    }
-
-    public function attachObserver($callback) {
-        $this->observers[] = $callback;
-    }
-
-    public function updateObservers() {
-        foreach ($this->observers as $callback) {
-            call_user_func_array($callback, func_get_args());
-        }
-    }
-
-    public function __construct($name = '') {
-        $reflector = new \ReflectionObject($this);
-        foreach ($reflector->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-            $test = $name ? strcasecmp($method->getName(), $name) : stripos($method->getName(), 'test');
-            if ($test === 0) {
-                $this->tests[] = $method->getName();
-            }
-        }
-    }
-
-    public function count() {
-        return count($this->tests);
-    }
-
-    protected function assertPreConditions() {
-    }
-
-    protected function assertPostConditions() {
-    }
-
-    protected function setUpBeforeClass() {
-    }
-
-    protected function onNotSuccessfulTest() {
-    }
-
-    protected function setUp() {
-    }
-
-    protected function tearDown() {
-    }
-
-    protected function tearDownAfterClass() {
+    public function __construct(Test $test, $method, array $arguments = array()) {
+        $this->test = $test;
+        $this->method = $method;
+        $this->arguments = $arguments;
     }
 
     public function run(TestResult $result) {
-        $this->setUpBeforeClass();
-        foreach ($this->tests as $test) {
-            $this->runTest($test, $result);
-        }
-        $this->tearDownAfterClass();
-    }
-
-    public function runTest($name, TestResult $result) {
         $result->testStarted();
-        $this->setUp();
+        $this->test->setUp();
         $this->installErrorHandler();
         try {
-            $this->assertPreConditions();
-            $this->updateObservers('beforeTest', $name, $result);
-            $this->{$name}();
-            $this->updateObservers('afterTest', $name, $result);
-            $this->assertPostConditions();
+            $this->test->assertPreConditions();
+            $this->updateObservers('beforeTest', $this->method, $result);
+            call_user_func_array(array($this->test, $this->method), $this->arguments);
+            $this->updateObservers('afterTest', $this->method, $result);
+            $this->test->assertPostConditions();
             $result->testCompleted();
         } catch (\PHPTest\Exception\ErrorException $e) {
-            $this->updateObservers('errorTest', $name, $result, $e);
-            $this->onNotSuccessfulTest();
+            $this->updateObservers('errorTest', $this->method, $result, $e);
+            $this->test->onNotSuccessfulTest();
             $result->testError($e);
         } catch (\Exception $e) {
-            $this->updateObservers('failedTest', $name, $result, $e);
-            $this->onNotSuccessfulTest();
+            $this->updateObservers('failedTest', $this->method, $result, $e);
+            $this->test->onNotSuccessfulTest();
             $result->testFailed($e);
         }
         $this->uninstallErrorHandler();
-        $this->tearDown();
+        $this->test->tearDown();
     }
 
     protected function installErrorHandler() {

@@ -7,7 +7,7 @@ require_once '../src/PHPTest/bootstrap.php';
 require_once 'bootstrap.php';
 
 $suite = new \PHPTest\TestSuite;
-$suite->add(new \PHPTest\TestCaseTest);
+$suite->add(new \PHPTest\TestClassTest);
 $suite->add(new \PHPTest\TestResultTest);
 $suite->add(new \PHPTest\TestSuiteTest);
 $suite->add(new \PHPTest\Report\CLITest);

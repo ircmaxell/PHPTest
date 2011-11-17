@@ -2,47 +2,52 @@
 
 namespace PHPTest;
 
-class TestSuiteTest extends TestCase {
+class TestSuiteTest extends TestClass {
+
+    protected $suite = null;
+
+    public function setUp() {
+        $this->suite = new TestSuite();
+    }
 
     public function testCount() {
-        $suite = new TestSuite;
-        $suite->add(new WasRunTest());
-        $this->assert(4 == count($suite));
-        $suite->add(new WasRunTest());
-        $this->assert(8 == count($suite));
+        $this->suite->add(new Mocks\WasRunTest());
+        $this->assert(4 == count($this->suite));
+        $this->suite->add(new Mocks\WasRunTest());
+        $this->assert(8 == count($this->suite));
     }
 
     public function testSuite() {
-        $suite = new TestSuite;
-        $suite->add(new WasRunTest());
+        $this->suite = new TestSuite;
+        $this->suite->add(new Mocks\WasRunTest());
         $result = new TestResult;
-        $suite->run($result);
+        $this->suite->run($result);
         $this->assert(2 == $result->getSuccessfulCount(), 'Suite Failed');
         $this->assert(1 == $result->getFailedCount(), 'Suite Failed, Too Many Errors');
     }
 
     public function testSuiteWithSuite() {
-        $suite = new TestSuite;
-        $suite->add(new WasRunTest());
-        $suite2 = new TestSuite;
-        $suite2->add(new WasRunTest());
-        $suite->add($suite2);
+        $this->suite = new TestSuite;
+        $this->suite->add(new Mocks\WasRunTest());
+        $this->suite2 = new TestSuite;
+        $this->suite2->add(new Mocks\WasRunTest());
+        $this->suite->add($this->suite2);
         $result = new TestResult;
-        $suite->run($result);
+        $this->suite->run($result);
         $this->assert(4 == $result->getSuccessfulCount(), 'Suite Failed');
         $this->assert(2 == $result->getFailedCount(), 'Suite Failed, Too Many Errors');
     }
 
     public function testAddPlugin() {
-        $suite = new TestSuite();
-        $test = new WasRunTest();
-        $suite->add($test);
-        $suite->addPlugin(new \PHPTest\Plugins\Assert);
+
+        $test = new Mocks\WasRunTest();
+        $this->suite->add($test);
+        $this->suite->addPlugin(new \PHPTest\Plugins\Assert);
         //Test to see if plugin cascaded
         $test->assertEquals(true, true);
         //Test to see if later added tests get cascaded as well
-        $test2 = new WasRunTest();
-        $suite->add($test2);
+        $test2 = new Mocks\WasRunTest();
+        $this->suite->add($test2);
         $test2->assertEquals(true, true);
     }
 

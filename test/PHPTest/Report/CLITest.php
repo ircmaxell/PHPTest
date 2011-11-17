@@ -2,7 +2,7 @@
 
 namespace PHPTest\Report;
 
-class CLITest extends \PHPTest\TestCase {
+class CLITest extends \PHPTest\TestClass {
 
     public function testUpdate() {
         $result = new \PHPTest\TestResult;

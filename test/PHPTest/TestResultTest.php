@@ -2,7 +2,7 @@
 
 namespace PHPTest;
 
-class TestResultTest extends TestCase {
+class TestResultTest extends TestClass {
 
     public function testObservers() {
         $last = '';

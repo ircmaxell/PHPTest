@@ -2,11 +2,11 @@
 
 namespace PHPTest\Plugins;
 
-class AssertTest extends \PHPTest\TestCase {
+class AssertTest extends \PHPTest\TestClass {
 
     protected $base = null;
 
-    protected function setUp() {
+    public function setUp() {
         $this->base = new Assert;
     }
 

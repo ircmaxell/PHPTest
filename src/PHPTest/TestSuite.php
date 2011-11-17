@@ -2,32 +2,7 @@
 
 namespace PHPTest;
 
-class TestSuite implements Testable {
-    protected $tests = array();
-
-    protected $observers = array();
-
-    protected $plugins = array();
-
-    public function addPlugin($plugin) {
-        $this->plugins[] = $plugin;
-        foreach ($this->tests as $test) {
-            $test->addPlugin($plugin);
-        }
-    }
-
-    public function attachObserver($callback) {
-        $this->observers[] = $callback;
-        foreach ($this->tests as $test) {
-            $test->attachObserver($callback);
-        }
-    }
-
-    public function updateObservers() {
-        foreach ($this->observers as $callback) {
-            call_user_func_array($callback, func_get_args());
-        }
-    }
+class TestSuite extends TestBase {
 
     public function add(Testable $test) {
         $this->tests[] = $test;

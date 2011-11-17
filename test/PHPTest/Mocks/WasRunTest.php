@@ -1,36 +1,36 @@
 <?php
 
-namespace PHPTest;
+namespace PHPTest\Mocks;
 
-class WasRunTest extends TestCase {
+class WasRunTest extends \PHPTest\TestClass {
 
     public $log = '';
 
-    protected function assertPreConditions() {
+    public function assertPreConditions() {
         $this->log .= 'assertPreConditions ';
     }
 
-    protected function assertPostConditions() {
+    public function assertPostConditions() {
         $this->log .= 'assertPostConditions ';
     }
 
-    protected function onNotSuccessfulTest() {
+    public function onNotSuccessfulTest() {
         $this->log .= 'onNotSuccessfulTest ';
     }
 
-    protected function setUp() {
+    public function setUp() {
         $this->log .= 'setUp ';
     }
 
-    protected function tearDown() {
+    public function tearDown() {
         $this->log .= 'tearDown ';
     }
 
-    protected function setUpBeforeClass() {
+    public function setUpBeforeClass() {
         $this->log .= 'setUpBeforeClass ';
     }
 
-    protected function tearDownAfterClass() {
+    public function tearDownAfterClass() {
         $this->log .= 'tearDownAfterClass ';
     }
 
