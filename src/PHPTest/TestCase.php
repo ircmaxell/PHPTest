@@ -8,6 +8,21 @@ class TestCase implements Testable {
 
     protected $observers = array();
 
+    protected $plugins = array();
+
+    public function __call($method, $args) {
+        foreach ($this->plugins as $plugin) {
+            if (method_exists($plugin, $method)) {
+                return call_user_func_array(array($plugin, $method), $args);
+            }
+        }
+        throw new \BadMethodCallException('Method does not exist in plugins');
+    }
+
+    public function addPlugin($plugin) {
+        $this->plugins[] = $plugin;
+    }
+
     public function attachObserver($callback) {
         $this->observers[] = $callback;
     }
@@ -30,12 +45,6 @@ class TestCase implements Testable {
 
     public function count() {
         return count($this->tests);
-    }
-
-    public function assert($test, $message = '') {
-        if (!$test) {
-            throw new \PHPTest\Exception\AssertionFailure($message);
-        }
     }
 
     protected function assertPreConditions() {

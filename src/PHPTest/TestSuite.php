@@ -7,6 +7,15 @@ class TestSuite implements Testable {
 
     protected $observers = array();
 
+    protected $plugins = array();
+
+    public function addPlugin($plugin) {
+        $this->plugins[] = $plugin;
+        foreach ($this->tests as $test) {
+            $test->addPlugin($plugin);
+        }
+    }
+
     public function attachObserver($callback) {
         $this->observers[] = $callback;
         foreach ($this->tests as $test) {
@@ -24,6 +33,9 @@ class TestSuite implements Testable {
         $this->tests[] = $test;
         foreach ($this->observers as $observer) {
             $test->attachObserver($observer);
+        }
+        foreach ($this->plugins as $plugin) {
+            $test->addPlugin($plugin);
         }
     }
 

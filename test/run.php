@@ -7,10 +7,13 @@ require_once '../src/PHPTest/bootstrap.php';
 require_once 'bootstrap.php';
 
 $suite = new \PHPTest\TestSuite;
-$suite->add(new \PHPTest\TestCaseTest());
-$suite->add(new \PHPTest\TestResultTest());
-$suite->add(new \PHPTest\TestSuiteTest());
-$suite->add(new \PHPTest\Report\CLITest());
+$suite->add(new \PHPTest\TestCaseTest);
+$suite->add(new \PHPTest\TestResultTest);
+$suite->add(new \PHPTest\TestSuiteTest);
+$suite->add(new \PHPTest\Report\CLITest);
+$suite->add(new \PHPTest\Plugins\AssertTest);
+
+$suite->addPlugin(new \PHPTest\Plugins\Assert);
 
 $coverage = new \PHPTest\TestCoverage;
 $coverage->add($suite);

@@ -15,6 +15,26 @@ class TestCaseTest extends TestCase {
         $this->assert(4 == count($test));
     }
 
+    public function testAddPlugin() {
+        $test = new WasRunTest();
+        $test->addPlugin(new \PHPTest\Plugins\Assert);
+    }
+
+    public function testRunPlugin() {
+        $test = new WasRunTest();
+        $test->addPlugin(new \PHPTest\Plugins\Assert);
+        $test->assertEquals(true, true);
+    }
+
+    public function testRunBadPlugin() {
+        try {
+            $test = new WasRunTest();
+            $test->addPlugin(new \PHPTest\Plugins\Assert);
+            $test->badMethodCall();
+            throw new \LogicException('Method was not called');
+        } catch (\BadMethodCallException $e) {}
+    }
+
     public function testAssert() {
         $this->assert(true, 'Assert(true) failed!!!');
     }

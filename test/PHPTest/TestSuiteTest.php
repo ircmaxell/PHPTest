@@ -33,4 +33,17 @@ class TestSuiteTest extends TestCase {
         $this->assert(2 == $result->getFailedCount(), 'Suite Failed, Too Many Errors');
     }
 
+    public function testAddPlugin() {
+        $suite = new TestSuite();
+        $test = new WasRunTest();
+        $suite->add($test);
+        $suite->addPlugin(new \PHPTest\Plugins\Assert);
+        //Test to see if plugin cascaded
+        $test->assertEquals(true, true);
+        //Test to see if later added tests get cascaded as well
+        $test2 = new WasRunTest();
+        $suite->add($test2);
+        $test2->assertEquals(true, true);
+    }
+
 }
