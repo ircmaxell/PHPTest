@@ -2,20 +2,20 @@
 
 namespace PHPTest\Plugins;
 
-class Assert {
+class Assert implements \PHPTest\Plugin {
 
-    protected $observer;
+    protected $test;
 
-    public function __construct(\PHPTest\Observable $observer) {
-        $this->observer = $observer;
+    public function __construct(\PHPTest\Testable $test) {
+        $this->test = $test;
     }
 
     public function assert($test, $message = '') {
         if (!$test) {
-            $this->observer->updateObservers('assertFailure', $message);
+            $this->test->updateObservers('assertFailure', $message);
             throw new \PHPTest\Exception\AssertionFailure($message);
         }
-        $this->observer->updateObservers('assert', $message);
+        $this->test->updateObservers('assert', $message);
     }
 
     public function assertEquals($test1, $test2, $message = '') {

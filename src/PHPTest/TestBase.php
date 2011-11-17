@@ -19,7 +19,7 @@ abstract class TestBase implements Testable {
         throw new \BadMethodCallException('Method does not exist in plugins: ' . $method);
     }
 
-    public function addPlugin($plugin) {
+    public function addPlugin(Plugin $plugin) {
         $this->plugins[] = $plugin;
         foreach ($this->tests as $test) {
             $test->addPlugin($plugin);
