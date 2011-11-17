@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPTest;
+namespace PHPTest\Core;
 
 interface Test {
 

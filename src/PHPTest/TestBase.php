@@ -2,7 +2,7 @@
 
 namespace PHPTest;
 
-abstract class TestBase implements Testable {
+abstract class TestBase implements Core\Testable {
 
     protected $tests = array();
 
@@ -19,7 +19,7 @@ abstract class TestBase implements Testable {
         throw new \BadMethodCallException('Method does not exist in plugins: ' . $method);
     }
 
-    public function addPlugin(Plugin $plugin) {
+    public function addPlugin(Core\Plugin $plugin) {
         $this->plugins[] = $plugin;
         foreach ($this->tests as $test) {
             $test->addPlugin($plugin);

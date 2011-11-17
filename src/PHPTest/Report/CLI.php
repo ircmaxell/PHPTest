@@ -2,7 +2,7 @@
 
 namespace PHPTest\Report;
 
-class CLI implements \PHPTest\TestReport {
+class CLI implements \PHPTest\Core\Report {
 
     public function update(\PHPTest\TestResult $result, $name, $arg1 = null) {
         switch ($name) {

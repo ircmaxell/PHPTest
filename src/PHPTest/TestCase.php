@@ -8,7 +8,7 @@ class TestCase extends TestBase {
     protected $method = '';
     protected $arguments = array();
 
-    public function __construct(Test $test, $method, array $arguments = array()) {
+    public function __construct(Core\Test $test, $method, array $arguments = array()) {
         $this->test = $test;
         $this->method = $method;
         $this->arguments = $arguments;

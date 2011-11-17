@@ -4,7 +4,7 @@ namespace PHPTest;
 
 class TestSuite extends TestBase {
 
-    public function add(Testable $test) {
+    public function add(Core\Testable $test) {
         $this->tests[] = $test;
         foreach ($this->observers as $observer) {
             $test->attachObserver($observer);

@@ -1,11 +1,11 @@
 <?php
 
-namespace PHPTest;
+namespace PHPTest\Core;
 
 interface Testable extends \Countable, Observable {
 
     public function addPlugin(Plugin $plugin);
 
-    public function run(TestResult $result);
+    public function run(\PHPTest\TestResult $result);
 
 }

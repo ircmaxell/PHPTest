@@ -15,7 +15,7 @@ class TestCoverage {
         $this->phpCC = new \PHP_CodeCoverage(null, $filter);
     }
 
-    public function add(Testable $test) {
+    public function add(Core\Testable $test) {
         if (!function_exists('xdebug_start_code_coverage')) return;
         $cov = $this;
         $test->attachObserver(function($name, $arg1, $arg2 = null, $arg3 = null) use ($cov) {

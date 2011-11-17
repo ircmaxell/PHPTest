@@ -12,6 +12,7 @@ $suite->add(new \PHPTest\TestResultTest);
 $suite->add(new \PHPTest\TestSuiteTest);
 $suite->add(new \PHPTest\BootstrapTest);
 $suite->add(new \PHPTest\Report\CLITest);
+$suite->add(new \PHPTest\Core\ChainTest);
 $suite->add(new \PHPTest\Plugins\AssertTest);
 
 $suite->addPlugin(new \PHPTest\Plugins\Assert($suite));

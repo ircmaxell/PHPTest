@@ -2,11 +2,11 @@
 
 namespace PHPTest\Plugins;
 
-class Assert implements \PHPTest\Plugin {
+class Assert implements \PHPTest\Core\Plugin {
 
     protected $test;
 
-    public function __construct(\PHPTest\Testable $test) {
+    public function __construct(\PHPTest\Core\Testable $test) {
         $this->test = $test;
     }
 

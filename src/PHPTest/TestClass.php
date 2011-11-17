@@ -2,7 +2,7 @@
 
 namespace PHPTest;
 
-class TestClass extends TestBase implements Test {
+class TestClass extends TestBase implements Core\Test {
 
     public function __construct() {
         $reflector = new \ReflectionObject($this);
