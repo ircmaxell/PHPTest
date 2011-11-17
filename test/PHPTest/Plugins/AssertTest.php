@@ -5,9 +5,11 @@ namespace PHPTest\Plugins;
 class AssertTest extends \PHPTest\TestClass {
 
     protected $base = null;
+    protected $test = null;
 
     public function setUp() {
-        $this->base = new Assert;
+        $this->test = new \PHPTest\Mocks\WasRunTest;
+        $this->base = new Assert($this->test);
     }
 
     public function testAssert() {
@@ -17,6 +19,19 @@ class AssertTest extends \PHPTest\TestClass {
         } catch (\PHPTest\Exception\AssertionFailure $e) {
         }
         $this->base->assert(true);
+    }
+
+    public function testAssertEventsFire() {
+        $last = '';
+        $this->test->attachObserver(function($name) use (&$last) { $last = $name; });
+        try {
+            $this->base->assert(false);
+            throw new \Exception('Assertion Was Not Thrown');
+        } catch (\PHPTest\Exception\AssertionFailure $e) {
+        }
+        $this->assertEquals($last, 'assertFailure');
+        $this->base->assert(true);
+        $this->assertEquals($last, 'assert');
     }
 
     public function testAssertEquals() {

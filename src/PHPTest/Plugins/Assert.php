@@ -4,10 +4,18 @@ namespace PHPTest\Plugins;
 
 class Assert {
 
+    protected $observer;
+
+    public function __construct(\PHPTest\Observable $observer) {
+        $this->observer = $observer;
+    }
+
     public function assert($test, $message = '') {
         if (!$test) {
+            $this->observer->updateObservers('assertFailure', $message);
             throw new \PHPTest\Exception\AssertionFailure($message);
         }
+        $this->observer->updateObservers('assert', $message);
     }
 
     public function assertEquals($test1, $test2, $message = '') {

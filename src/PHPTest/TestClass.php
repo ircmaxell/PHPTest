@@ -8,7 +8,7 @@ class TestClass extends TestBase implements Test {
         $reflector = new \ReflectionObject($this);
         foreach ($reflector->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
             if (stripos($method->getName(), 'test') === 0) {
-                $this->tests[] = new TestCase($this, $method->getName());
+                $this->addTestMethod($method);
             }
         }
     }
@@ -42,4 +42,26 @@ class TestClass extends TestBase implements Test {
         $this->tearDownAfterClass();
     }
 
+    protected function addTestMethod(\ReflectionMethod $method) {
+        $comment = $method->getDocComment();
+        $providerData = $this->getDataProviderData($comment);
+        if ($providerData) {
+            foreach ($providerData as $call) {
+                $this->tests[] = new TestCase($this, $method->getName(), $call);
+            }
+        } else {
+            $this->tests[] = new TestCase($this, $method->getName());
+        }
+    }
+
+    protected function getDataProviderData($comment) {
+        if (preg_match('(\s*@dataProvider\s*(\S+))m', $comment, $match)) {
+            $method = trim($match[1]);
+            if (method_exists($this, $method)) {
+                $class = get_class($this);
+                return $class::$method();
+            }
+        }
+        return array();
+    }
 }

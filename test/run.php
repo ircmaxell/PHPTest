@@ -10,10 +10,11 @@ $suite = new \PHPTest\TestSuite;
 $suite->add(new \PHPTest\TestClassTest);
 $suite->add(new \PHPTest\TestResultTest);
 $suite->add(new \PHPTest\TestSuiteTest);
+$suite->add(new \PHPTest\BootstrapTest);
 $suite->add(new \PHPTest\Report\CLITest);
 $suite->add(new \PHPTest\Plugins\AssertTest);
 
-$suite->addPlugin(new \PHPTest\Plugins\Assert);
+$suite->addPlugin(new \PHPTest\Plugins\Assert($suite));
 
 $coverage = new \PHPTest\TestCoverage;
 $coverage->add($suite);
@@ -34,10 +35,25 @@ $result->attachObserver(function($name, $arg1 = null) use ($result, $renderer, $
         }
     }
 });
+$assertions = array(
+    'successful' => 0,
+    'failure' => 0,
+);
+$suite->attachObserver(function($name) use (&$assertions) {
+    switch ($name) {
+        case 'assert':
+            $assertions['successful']++;
+            break;
+        case 'assertFailure':
+            $assertions['failure']++;
+            break;
+    }
+});
+
 $suite->run($result);
 
 echo "\n\n" . $renderer->render($result);
-
+echo "\n\nAssertions: {$assertions['successful']} Successful, {$assertions['failure']} Failed\n\n";
 $phpCC = $coverage->getCoverage();
 
 require_once 'PHP/CodeCoverage/Report/HTML.php';

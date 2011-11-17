@@ -42,7 +42,7 @@ class TestSuiteTest extends TestClass {
 
         $test = new Mocks\WasRunTest();
         $this->suite->add($test);
-        $this->suite->addPlugin(new \PHPTest\Plugins\Assert);
+        $this->suite->addPlugin(new \PHPTest\Plugins\Assert($this->suite));
         //Test to see if plugin cascaded
         $test->assertEquals(true, true);
         //Test to see if later added tests get cascaded as well
